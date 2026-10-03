@@ -1,0 +1,8 @@
+vendor/
+dist/solver.wasm
+dist/kernels.c
+.preview.json
+__pycache__/
+.openai/
+.env*
+.DS_Store
