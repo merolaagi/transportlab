@@ -2,9 +2,9 @@
 
 A working educational and research web app for **1D isotropic advection–diffusion**. Both modes use the same original Lanyon C kernels compiled to WebAssembly. All simulations run locally in a Web Worker; no simulation inputs are sent to a server. Runs and pinned comparisons are tab-local and disappear on reload.
 
-Live app: https://transport-lab-lanyon.aps-bht.chatgpt.site (owner sign-in required).
+Live app: https://transportlab.fueldeskpro.com (owner sign-in required).
 
-Custom hostname requested: `transportlab.fueldeskpro.com` (DNS setup in progress).
+The custom domain is active with HTTPS. Original Sites URL: https://transport-lab-lanyon.aps-bht.chatgpt.site. The website remains owner-private; the source repository is public.
 
 ## Use
 
