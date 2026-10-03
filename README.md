@@ -51,3 +51,15 @@ The numerical suite checks grid convergence against an exact sine-wave solution,
 At t=0.5, a=0.5, D=0.005, errors for 64/128/256 cells were approximately 1.562e-3 / 3.902e-4 / 9.709e-5.
 
 Browser checks exercised Research mode, grid changes, timeline endpoint, pinned comparison, and valid/invalid WebMCP runs. Exports contain all 101 frames as CSV plus a separate JSON record of parameters and provenance.
+
+## Learn with physics
+
+`dist/pinn.html` is an independent browser training experiment inspired by Ben Moseley's PINN tutorial and 2022 Oxford thesis. It uses **new JavaScript code**, not copied tutorial code or the Lanyon kernel, and works without fetching upstream dependencies.
+
+Both models have one hidden layer with 32 tanh neurons and periodic inputs `(sin(2πx), cos(2πx), 2t−1)`. They share initial weights, sparse observations in t∈[0,0.25], and 32 clean initial-condition samples. The experiment fixes v=0.5 and D=0.01. The exact pointwise solution is `0.5 + 0.4 exp(−4π²Dt) sin(2π(x−vt))`.
+
+Adam (learning rate 0.003) minimizes data MSE + initial MSE in the ordinary NN. The PINN also minimizes λ times the differential-equation residual MSE on 48 newly sampled collocation points per step. Input derivatives and parameter gradients are analytic, tested against finite differences, and include the second spatial derivative. Periodicity is enforced through input encoding in both models. Residual diagnostics use a fixed 16×16 grid; fields and exact errors use 64 positions and 21 time slices. Unobserved-time RMSE uses t>0.25. Compute-time measurements cover loss/gradient evaluation and optimizer updates, excluding snapshots, plotting, and replay. Timing is device-dependent and is not a controlled performance benchmark.
+
+Observation noise is the sum of six centered uniforms scaled to the selected standard deviation; it is approximately Gaussian, not exactly Gaussian. There is no full-field exact-solution supervision. Multiple seeds and configurable data/noise/physics weights help reveal sensitivity. PINN training has no guaranteed convergence and is not a formal verification method.
+
+Run `node tests/pinn.mjs` to check all parameter gradients, PDE residual derivatives, full loss gradients, periodicity, exact equality at λ=0, three-seed convergence, and invalid inputs. Training checkpoints, loss curves, PDE residual maps, and run metadata can be exported as JSON. The page exposes an optional validated WebMCP training action.
