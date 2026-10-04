@@ -63,3 +63,11 @@ Adam (learning rate 0.003) minimizes data MSE + initial MSE in the ordinary NN. 
 Observation noise is the sum of six centered uniforms scaled to the selected standard deviation; it is approximately Gaussian, not exactly Gaussian. There is no full-field exact-solution supervision. Multiple seeds and configurable data/noise/physics weights help reveal sensitivity. PINN training has no guaranteed convergence and is not a formal verification method.
 
 Run `node tests/pinn.mjs` to check all parameter gradients, PDE residual derivatives, full loss gradients, periodicity, exact equality at λ=0, three-seed convergence, and invalid inputs. Training checkpoints, loss curves, PDE residual maps, and run metadata can be exported as JSON. The page exposes an optional validated WebMCP training action.
+
+## Rule Lab
+
+Open `rules.html` to compare weighted penalties, exact finite-domain constraints, and a separate Boolean checker. Five presets demonstrate sufficient, missing, incorrect, conflicting, and absent rules. The domain is explicitly the nine integers from −4 through 4. The synthetic held-out observation is x = +2; it does not enter either objective or constraints. All tied minimizers and satisfying candidates are shown. Minimal conflicting rule sets are enumerated.
+
+This is an exact symbolic teaching sandbox, not a neural network or formal proof assistant. The separate PINN page trains actual neural networks. Rule Lab distinguishes consistency, uniqueness within a declared domain, and agreement with observations.
+
+Run `node tests/rules.mjs` for scenario tests, exhaustive checks over all 16 rulebooks, minimal conflicts, zero-weight behavior, and input validation. The optional WebMCP tool `explore_rulebook` uses the same validated controls and updates the visible experiment.
