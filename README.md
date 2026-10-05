@@ -71,3 +71,19 @@ Open `rules.html` to compare weighted penalties, exact finite-domain constraints
 This is an exact symbolic teaching sandbox, not a neural network or formal proof assistant. The separate PINN page trains actual neural networks. Rule Lab distinguishes consistency, uniqueness within a declared domain, and agreement with observations.
 
 Run `node tests/rules.mjs` for scenario tests, exhaustive checks over all 16 rulebooks, minimal conflicts, zero-weight behavior, and input validation. The optional WebMCP tool `explore_rulebook` uses the same validated controls and updates the visible experiment.
+
+## Hidden Physics: inverse-model benchmark
+
+Open `hidden.html` to train a data-only neural field and an inverse PINN from the same sparse measurements, alongside a conventional exact-family parameter fit. Unknown speed is bounded to [−1,1], diffusion to [0.001,0.05]. The PINN learns speed and log diffusion jointly with its 161 neural weights; analytic gradients are checked against finite differences. Both networks know the initial sine profile and encode periodicity. Conservation is evaluated, not structurally enforced.
+
+The seeded generator varies speed and diffusion; training functions receive only observations and known initial/boundary assumptions. Held-out forecast scoring uses t > 0.4. This first benchmark trains per experiment, not a pretrained model across experiments. The conventional baseline has the stronger exact-solution-family prior. Sensitivity ranges are coarse-grid near-optimal regions, not calibrated confidence intervals. The t=0-only scenario explicitly reports non-identifiability.
+
+Download trained weights and observations as JSON from the page, then run:
+
+```sh
+node examples/predict-model.mjs /path/to/transport-model-seed-1.json 0.3 0.75
+```
+
+This performs inference without retraining. Queries are limited to x,t in [0,1]. Model files contain both neural weight arrays and fitted conventional parameters, with no hidden truth used for inference.
+
+Validation: `node tests/hidden.mjs` covers noiseless parameter recovery, an unidentifiable experiment, network and physical-parameter gradients, export/inference round-trip, periodicity, and three seeded training runs. With 16 observations, noise 0.01 and 3,000 steps, seeds 1–3 gave forecast RMSE (data NN / PINN / conventional): 0.1140 / 0.00957 / 0.01122; 0.3062 / 0.00530 / 0.00374; 0.08206 / 0.01623 / 0.01378. These are narrow synthetic checks, not evidence of broad generalization.
