@@ -87,3 +87,11 @@ node examples/predict-model.mjs /path/to/transport-model-seed-1.json 0.3 0.75
 This performs inference without retraining. Queries are limited to x,t in [0,1]. Model files contain both neural weight arrays and fitted conventional parameters, with no hidden truth used for inference.
 
 Validation: `node tests/hidden.mjs` covers noiseless parameter recovery, an unidentifiable experiment, network and physical-parameter gradients, export/inference round-trip, periodicity, and three seeded training runs. With 16 observations, noise 0.01 and 3,000 steps, seeds 1–3 gave forecast RMSE (data NN / PINN / conventional): 0.1140 / 0.00957 / 0.01122; 0.3062 / 0.00530 / 0.00374; 0.08206 / 0.01623 / 0.01378. These are narrow synthetic checks, not evidence of broad generalization.
+
+## Isomorph weight-study bridge
+
+Open `isomorph.html` for matched data-only, correct-physics and wrong-physics training across 6, 8 or 12 seeds. Half the seeds are discovery; the rest are confirmation. A fixed donor from discovery supplies hidden features for transfer, alongside a column-scrambled control and random initialization. Outputs and optimizer state start fresh. Donor pretraining is additional compute. This is a same-task transfer study, not a discovered law.
+
+Download the `transport-isomorph-v1` JSON for import into the updated local Isomorph app's `/transport/` page. The bundle contains 161-weight models at five checkpoints, observations, updates, condition metadata and scores. The Python adapter independently recomputes the metrics and compares exact signed-neuron alignments using separate fit/evaluation inputs. It keeps this small-network study separate from language-model-specific analyses.
+
+Run `node tests/campaign.mjs [optional-export-path.json]` to reproduce the default study and check matched controls. The first study found a transfer advantage over both controls in only 1 of 3 confirmation seeds. Raw Fourier structure is supplied by the architecture, not evidence of discovery.
